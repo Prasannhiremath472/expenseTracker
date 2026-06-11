@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import '../constants/hive_constants.dart';
 
 /// Generic Hive-backed cache. Each entity is stored as a JSON string
