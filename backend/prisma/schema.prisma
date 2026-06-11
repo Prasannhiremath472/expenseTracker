@@ -1,0 +1,120 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ProjectStatus {
+  ACTIVE
+  COMPLETED
+  ON_HOLD
+}
+
+enum ExpenseCategory {
+  MATERIAL
+  LABOUR
+  TRANSPORT
+  MACHINERY
+  DIESEL
+  ELECTRICITY
+  FOOD
+  MISCELLANEOUS
+}
+
+enum PaymentMode {
+  CASH
+  UPI
+  BANK_TRANSFER
+  CHEQUE
+  CARD
+}
+
+model User {
+  id               String   @id @default(uuid())
+  fullName         String
+  mobile           String   @unique
+  email            String   @unique
+  password         String
+  resetToken       String?
+  resetTokenExpiry DateTime?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  projects     Project[]
+  expenses     Expense[]
+  dailyReports DailyReport[]
+
+  @@map("users")
+}
+
+model Project {
+  id              String        @id @default(uuid())
+  userId          String
+  projectName     String
+  clientName      String
+  siteAddress     String
+  startDate       DateTime
+  estimatedBudget Decimal       @db.Decimal(14, 2)
+  description     String?
+  status          ProjectStatus @default(ACTIVE)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expenses     Expense[]
+  dailyReports DailyReport[]
+
+  @@index([userId])
+  @@map("projects")
+}
+
+model Expense {
+  id           String          @id @default(uuid())
+  projectId    String
+  userId       String
+  date         DateTime
+  category     ExpenseCategory
+  amount       Decimal         @db.Decimal(14, 2)
+  description  String?
+  vendorName   String?
+  paymentMode  PaymentMode
+  billImageUrl String?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([projectId])
+  @@index([date])
+  @@index([category])
+  @@map("expenses")
+}
+
+model DailyReport {
+  id             String   @id @default(uuid())
+  projectId      String
+  userId         String
+  date           DateTime
+  workersCount   Int
+  workCompleted  String?
+  materialsUsed  String?
+  issuesFaced    String?
+  notes          String?
+  sitePhotoUrls  String[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([projectId])
+  @@index([date])
+  @@map("daily_reports")
+}
