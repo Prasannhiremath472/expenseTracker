@@ -146,3 +146,21 @@ final reportFormProvider =
     StateNotifierProvider.autoDispose<ReportFormNotifier, AsyncValue<void>>((ref) {
   return ReportFormNotifier(ref.watch(reportRepositoryProvider));
 });
+
+/// Fetches all reports for [projectId] within an optional date range, for PDF export.
+/// Pages through the full result set since PDF generation needs the complete data.
+final reportsForExportProvider = FutureProvider.autoDispose
+    .family<List<ReportModel>, ({String projectId, DateTime? startDate, DateTime? endDate})>(
+        (ref, params) async {
+  final repository = ref.watch(reportRepositoryProvider);
+  final result = await repository.getReports(
+    projectId: params.projectId,
+    startDate: params.startDate,
+    endDate: params.endDate,
+    limit: 500,
+  );
+  return result.when(
+    success: (reports) => reports,
+    failure: (failure) => throw failure,
+  );
+});

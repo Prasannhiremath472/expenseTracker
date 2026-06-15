@@ -101,13 +101,9 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: RouteNames.addReport,
-        builder: (context, state) => const AddEditReportScreen(),
-      ),
-      GoRoute(
-        path: RouteNames.editReport,
         builder: (context, state) {
-          final id = state.pathParameters['id']!;
-          return _ReportEditLoader(reportId: id);
+          final projectId = state.extra as String?;
+          return AddEditReportScreen(initialProjectId: projectId);
         },
       ),
     ],
@@ -217,23 +213,3 @@ class _ExpenseEditLoader extends ConsumerWidget {
   }
 }
 
-/// Loads a daily report by id before showing the edit form.
-class _ReportEditLoader extends ConsumerWidget {
-  const _ReportEditLoader({required this.reportId});
-
-  final String reportId;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final reportAsync = ref.watch(reportDetailsProvider(reportId));
-
-    return reportAsync.when(
-      loading: () => const Scaffold(body: LoadingIndicator()),
-      error: (error, _) => Scaffold(
-        appBar: AppBar(title: const Text('Edit Daily Report')),
-        body: ErrorView(failure: error as Failure),
-      ),
-      data: (report) => AddEditReportScreen(report: report),
-    );
-  }
-}

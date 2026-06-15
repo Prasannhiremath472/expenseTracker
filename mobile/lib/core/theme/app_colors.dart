@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-/// Construction-industry inspired palette: safety orange accent,
-/// charcoal/slate primaries, concrete grey neutrals.
+/// Urja Construction brand palette: charcoal primaries and a red accent
+/// matching the company logo, with concrete grey neutrals.
 class AppColors {
   AppColors._();
 
-  static const Color primary = Color(0xFF2B3A42); // charcoal slate
-  static const Color primaryDark = Color(0xFF1B262C);
-  static const Color accent = Color(0xFFFF6B00); // safety orange
-  static const Color accentLight = Color(0xFFFF8A3D);
+  static const Color primary = Color(0xFF333333); // logo charcoal
+  static const Color primaryDark = Color(0xFF1A1A1A);
+  static const Color accent = Color(0xFFE53935); // logo red
+  static const Color accentLight = Color(0xFFFF6F60);
 
   static const Color background = Color(0xFFF5F5F4); // concrete grey
   static const Color surface = Color(0xFFFFFFFF);

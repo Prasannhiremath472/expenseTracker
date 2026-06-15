@@ -30,7 +30,7 @@ class SiteExpenseTrackerApp extends ConsumerWidget {
     });
 
     return MaterialApp.router(
-      title: 'Site Expense Tracker',
+      title: 'Urja Construction',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       routerConfig: router,

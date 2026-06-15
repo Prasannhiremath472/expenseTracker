@@ -16,10 +16,13 @@ import '../../data/models/report_model.dart';
 import '../providers/report_providers.dart';
 
 class AddEditReportScreen extends ConsumerStatefulWidget {
-  const AddEditReportScreen({super.key, this.report});
+  const AddEditReportScreen({super.key, this.report, this.initialProjectId});
 
   /// If provided, the screen edits this report; otherwise creates a new one.
   final ReportModel? report;
+
+  /// Pre-selected project id when adding a new report from Project Details.
+  final String? initialProjectId;
 
   @override
   ConsumerState<AddEditReportScreen> createState() => _AddEditReportScreenState();
@@ -49,7 +52,7 @@ class _AddEditReportScreenState extends ConsumerState<AddEditReportScreen> {
     _issuesFacedController = TextEditingController(text: report?.issuesFaced ?? '');
     _notesController = TextEditingController(text: report?.notes ?? '');
     _date = report?.date ?? DateTime.now();
-    _projectId = report?.projectId;
+    _projectId = report?.projectId ?? widget.initialProjectId;
     _existingPhotoUrls = List<String>.from(report?.sitePhotoUrls ?? []);
   }
 
@@ -158,7 +161,9 @@ class _AddEditReportScreenState extends ConsumerState<AddEditReportScreen> {
                       items: projects
                           .map((p) => DropdownMenuItem(value: p.id, child: Text(p.projectName)))
                           .toList(),
-                      onChanged: (value) => setState(() => _projectId = value),
+                      onChanged: widget.initialProjectId != null
+                          ? null
+                          : (value) => setState(() => _projectId = value),
                       validator: (value) => value == null ? 'Project is required' : null,
                     );
                   },

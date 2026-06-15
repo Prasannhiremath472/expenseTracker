@@ -1,7 +1,7 @@
 class AppConstants {
   AppConstants._();
 
-  static const String appName = 'Site Expense Tracker';
+  static const String appName = 'Urja Construction';
 
   static const List<String> projectStatuses = ['ACTIVE', 'COMPLETED', 'ON_HOLD'];
 

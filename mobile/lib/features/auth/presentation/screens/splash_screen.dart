@@ -26,7 +26,14 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.engineering, size: 72, color: AppColors.accent),
+            ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              child: Image(
+                image: AssetImage('assets/images/logo.jpg'),
+                width: 96,
+                height: 96,
+              ),
+            ),
             SizedBox(height: 16),
             Text(
               AppConstants.appName,

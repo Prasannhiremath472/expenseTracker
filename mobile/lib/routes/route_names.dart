@@ -20,12 +20,10 @@ class RouteNames {
 
   static const String reports = '/reports';
   static const String addReport = '/reports/add';
-  static const String editReport = '/reports/:id/edit';
 
   static const String profile = '/profile';
 
   static String projectDetailsPath(String id) => '/projects/$id';
   static String editProjectPath(String id) => '/projects/$id/edit';
   static String editExpensePath(String id) => '/expenses/$id/edit';
-  static String editReportPath(String id) => '/reports/$id/edit';
 }

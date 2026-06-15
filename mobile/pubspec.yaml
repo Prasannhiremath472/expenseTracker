@@ -45,6 +45,10 @@ dependencies:
   uuid: ^4.5.1
   path_provider: ^2.1.4
 
+  # PDF generation & sharing
+  pdf: ^3.11.1
+  printing: ^5.13.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -54,10 +58,16 @@ dev_dependencies:
   freezed: ^2.5.7
   json_serializable: ^6.8.0
   riverpod_generator: ^2.6.3
+  flutter_launcher_icons: ^0.14.1
 
 flutter:
   uses-material-design: true
 
-  # assets:
-  #   - assets/images/
-  #   - assets/icons/
+  assets:
+    - assets/images/
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo.jpg"
+  min_sdk_android: 21

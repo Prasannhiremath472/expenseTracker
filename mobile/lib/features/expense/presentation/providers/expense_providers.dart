@@ -156,3 +156,21 @@ final expenseFormProvider =
     StateNotifierProvider.autoDispose<ExpenseFormNotifier, AsyncValue<void>>((ref) {
   return ExpenseFormNotifier(ref.watch(expenseRepositoryProvider));
 });
+
+/// Fetches all expenses for [projectId] within an optional date range, for PDF export.
+/// Pages through the full result set since PDF generation needs the complete data.
+final expensesForExportProvider = FutureProvider.autoDispose
+    .family<List<ExpenseModel>, ({String projectId, DateTime? startDate, DateTime? endDate})>(
+        (ref, params) async {
+  final repository = ref.watch(expenseRepositoryProvider);
+  final result = await repository.getExpenses(
+    projectId: params.projectId,
+    startDate: params.startDate,
+    endDate: params.endDate,
+    limit: 500,
+  );
+  return result.when(
+    success: (expenses) => expenses,
+    failure: (failure) => throw failure,
+  );
+});
